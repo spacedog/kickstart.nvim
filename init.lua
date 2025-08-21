@@ -84,6 +84,9 @@ vim.o.confirm = true
 local current_cpoptions = vim.o.cpoptions
 vim.o.cpoptions = current_cpoptions .. '$'
 
+-- Change cwd to the directory of the open buffer
+vim.o.autochdir = true
+
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
