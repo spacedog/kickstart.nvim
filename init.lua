@@ -87,6 +87,9 @@ vim.o.cpoptions = current_cpoptions .. '$'
 -- Change cwd to the directory of the open buffer
 vim.o.autochdir = true
 
+-- Enable termguicolors, which allows Neovim to use 24-bit RGB colors
+vim.o.termguicolors = true
+
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
@@ -315,7 +318,6 @@ require('lazy').setup({
       { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
       -- Telescope Project is a plugin that allows you to quickly switch between projects.
       { 'nvim-telescope/telescope-project.nvim' },
-      { 'LukasPietzschmann/telescope-tabs' },
     },
     config = function()
       -- Telescope is a fuzzy finder that comes with a lot of different things that
@@ -374,7 +376,6 @@ require('lazy').setup({
       pcall(require('telescope').load_extension, 'fzf')
       pcall(require('telescope').load_extension, 'ui-select')
       pcall(require('telescope').load_extension, 'project')
-      pcall(require('telescope').load_extension, 'telescope-tabs')
 
       -- See `:help telescope.builtin`
       local builtin = require 'telescope.builtin'
@@ -415,10 +416,6 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>sp', function()
         require('telescope').extensions.project.project { hidden = true }
       end, { desc = '[S]earch [P]rojects' })
-      -- Shorcut to works with tabs
-      vim.keymap.set('n', '<leader>st', function()
-        require('telescope-tabs').list_tabs()
-      end, { desc = '[S]earch [T]abs' })
     end,
   },
 
@@ -1029,7 +1026,7 @@ require('lazy').setup({
           },
           chat = {
             name = 'copilot',
-            model = 'gpt-4o',
+            model = 'gpt-5',
             keymaps = {
               send = {
                 modes = { n = '<C-c><C-c>', i = '<C-c><C-c>' },
@@ -1055,6 +1052,25 @@ require('lazy').setup({
         },
         vim.keymap.set('n', '<leader>cc', '<cmd>CodeCompanionChat<cr>', { desc = 'AI [C]ode [Companion [C]hat' }),
         vim.keymap.set('n', '<leader>ca', '<cmd>CodeCompanionActions<cr>', { desc = 'AI [C]ode [Companion [A]ctions' }),
+      }
+    end,
+  },
+  { 'tiagovla/scope.nvim', config = true },
+  {
+    'akinsho/bufferline.nvim',
+    version = '*',
+    dependencies = 'nvim-tree/nvim-web-devicons',
+    config = function()
+      require('bufferline').setup {
+        options = {
+          mode = 'buffers',
+          diagnostics = 'nvim_lsp',
+          show_buffer_close_icons = false,
+          diagnostics_indicator = function(count, level, diagnostics_dict, context)
+            local icon = level:match 'error' and ' ' or ' '
+            return ' ' .. icon .. count
+          end,
+        },
       }
     end,
   },
