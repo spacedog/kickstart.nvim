@@ -757,7 +757,13 @@ require('lazy').setup({
     dependencies = {
       -- Snippet Engine
       {
-        'giuxtaposition/blink-cmp-copilot',
+        {
+          'fang2hou/blink-copilot',
+          opts = {
+            max_completions = 3, -- Global default for max completions
+            max_attempts = 2, -- Global default for max attempts
+          },
+        },
         'L3MON4D3/LuaSnip',
         version = '2.*',
         build = (function()
@@ -833,7 +839,7 @@ require('lazy').setup({
           lazydev = { module = 'lazydev.integrations.blink', score_offset = 100 },
           copilot = {
             name = 'copilot',
-            module = 'blink-cmp-copilot',
+            module = 'blink-copilot',
             score_offset = 100,
             async = true,
           },
@@ -998,9 +1004,6 @@ require('lazy').setup({
     end,
   },
   {
-    'giuxtaposition/blink-cmp-copilot',
-  },
-  {
     'zbirenbaum/copilot.lua',
     cmd = 'Copilot',
     event = 'InsertEnter',
@@ -1008,6 +1011,10 @@ require('lazy').setup({
       require('copilot').setup {
         suggestion = { enabled = false },
         panel = { enabled = false },
+        filetypes = {
+          markdown = true,
+          help = true,
+        },
       }
     end,
   },
