@@ -744,6 +744,8 @@ require('lazy').setup({
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
         -- javascript = { "prettierd", "prettier", stop_after_first = true },
+        rust = { 'rustfmt' },
+        terraform = { 'terraform_fmt' },
       },
     },
   },
@@ -755,6 +757,7 @@ require('lazy').setup({
     dependencies = {
       -- Snippet Engine
       {
+        'giuxtaposition/blink-cmp-copilot',
         'L3MON4D3/LuaSnip',
         version = '2.*',
         build = (function()
@@ -825,9 +828,15 @@ require('lazy').setup({
       },
 
       sources = {
-        default = { 'lsp', 'path', 'snippets', 'lazydev' },
+        default = { 'lsp', 'path', 'snippets', 'lazydev', 'copilot' },
         providers = {
           lazydev = { module = 'lazydev.integrations.blink', score_offset = 100 },
+          copilot = {
+            name = 'copilot',
+            module = 'blink-cmp-copilot',
+            score_offset = 100,
+            async = true,
+          },
         },
       },
 
@@ -989,19 +998,18 @@ require('lazy').setup({
     end,
   },
   {
-    'github/copilot.vim',
-    lazy = false,
-    -- confige = function()
-    --   vim.g.copilot_filetypes = {
-    --     ['*'] = true,
-    --   }
-    --   vim.g.copilot_no_tab_map = true
-    --   vim.set.keymap('i', '<C-c><C-a>', 'copilot#Accept("<CR>")', {})
-    --   vim.set.keymap('i', '<C-c><C-r>', 'copilot#Dismiss()', {})
-    --   vim.set.keymap('i', '<C-L>', 'copilot#Next()', {})
-    --   vim.set.keymap('i', '<C-H>', 'copilot#Previous()', {})
-    --   vim.set.keymap('i', '<C-Space>', 'copilot#Refresh()', {})
-    -- end,
+    'giuxtaposition/blink-cmp-copilot',
+  },
+  {
+    'zbirenbaum/copilot.lua',
+    cmd = 'Copilot',
+    event = 'InsertEnter',
+    config = function()
+      require('copilot').setup {
+        suggestion = { enabled = false },
+        panel = { enabled = false },
+      }
+    end,
   },
   {
     'olimorris/codecompanion.nvim',
