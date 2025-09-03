@@ -90,6 +90,10 @@ vim.o.autochdir = true
 -- Enable termguicolors, which allows Neovim to use 24-bit RGB colors
 vim.o.termguicolors = true
 
+-- Treesitter folding
+vim.wo.foldmethod = 'expr'
+vim.wo.foldexpr = 'nvim_treesitter#foldexpr()'
+
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
@@ -367,7 +371,7 @@ require('lazy').setup({
           ['project'] = {
             base_dirs = {
               { path = '~/work/repos', max_depth = 1 },
-              { path = '~/presonal/repos', max_depth = 1 },
+              -- { path = '~/presonal/repos', max_depth = 1 },
             },
             hidden_files = true,
           },
@@ -669,6 +673,11 @@ require('lazy').setup({
           filetypes = { 'terraform', 'terraform-vars' },
           root_markers = { '.terraform', '.git' },
         },
+        rust_analyzer = {
+          cmd = { 'rust-analyzer' },
+          filetypes = { 'rust' },
+          root_markers = { '.git' },
+        },
       }
 
       -- Ensure the servers and tools above are installed
@@ -931,7 +940,7 @@ require('lazy').setup({
     main = 'nvim-treesitter.configs', -- Sets main module to use for opts
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     opts = {
-      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc', 'hcl', 'nix' },
+      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc', 'hcl', 'nix', 'rust', 'toml' },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
