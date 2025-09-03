@@ -1000,7 +1000,16 @@ require('lazy').setup({
           verify_commit = vim.fn.executable 'gpg' == 1, -- Can be set to true or false, otherwise we try to find the binary
         },
       }
-      vim.keymap.set('n', '<leader>vg', vim.cmd.Neogit, {})
+      -- vim.keymap.set('n', '<leader>vg', vim.cmd.Neogit, {})
+      vim.keymap.set('n', '<leader>vg', function()
+        -- Get the directory of the current file.
+        local current_file_dir = vim.fn.expand '%:p:h'
+
+        -- Execute the Neogit command with the working directory set to the current file's directory.
+        vim.cmd('Neogit cwd=' .. vim.fn.fnameescape(current_file_dir))
+      end, {
+        desc = 'Neogit: Use repository of current file',
+      })
     end,
   },
   {
